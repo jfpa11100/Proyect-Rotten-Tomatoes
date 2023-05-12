@@ -1,0 +1,75 @@
+﻿@model Proyect_Rotten_Tomatoes.Models.Movie
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header text-white bg-info">
+                        <h5 class="card-title">@Model.Title</h5>
+                    </div>
+                </div>
+                <div class="col-md-6 mx-auto">
+                    <img src="@Model.Image" class="card-img-top" alt="@Model.Title">
+                </div>
+                <div class="col-md-12">
+                    <div class="card-body">
+                        <h5 class="card-title">Synopsis:</h5>
+                        <p class="card-text">@Model.Synopsis</p>
+                        <h5 class="card-title">Film team:</h5>
+                        <p class="card-text">@Model.Film_Team</p>
+                        <h5 class="card-title">Rating:</h5>
+                        <p class="card-text">@Model.Rating</p>
+                        <h5 class="card-title">Available platforms:</h5>
+                        <p class="card-text">@Model.Available_Platforms</p>
+                        <h5 class="card-title">Critic rating:</h5>
+                        @if (Model.Critic_Rating != 1)
+                        {
+                            <p class="card-text">@Model.Critic_Rating</p>
+                        }
+                        else
+                        {
+                            <p class="card-text">--</p>
+                        }
+                        <h5 class="card-title">Audience rating:</h5>
+                        @if (Model.Audience_Rating != 1)
+                        {
+                            <p class="card-text">@Model.Audience_Rating</p>
+                        }
+                        else
+                        {
+                            <p class="card-text">--</p>
+                        }
+                        <h5 class="card-title">Principal actors:</h5>
+                        <p class="card-text">@Model.Principal_Actors</p>
+                        @if (Model.Critic_Comments.Count() > 5)
+                        {
+                            <h5 class="card-title">Critic comments:</h5>
+                        }
+                        @foreach (string comment in Model.Critic_Comments.Split(";."))
+                        {
+                            if (comment.Count() > 5)
+                            {
+                                <p class="card-text"><b>-</b> @comment.Replace("&#39;","´").Replace("&#44","").Replace("&#46;",".").Replace("&#91;","").Replace("&#93;","").Replace("&"," ")</p>
+                            }
+                        }
+                        @if (Model.Audience_Comments.Count() > 5)
+                        {
+                            <h5 class="card-title">Audience comments:</h5>
+                        }
+                        @foreach (string comment in Model.Audience_Comments.Split(";."))
+                        {
+                            if (comment.Count() > 5)
+                            {
+                                <p class="card-text"><b>-</b> @comment.Replace("&#39;","´").Replace("&#44","").Replace("&#46;",".").Replace("&#91;","").Replace("&#93;","").Replace("&"," ")</p>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

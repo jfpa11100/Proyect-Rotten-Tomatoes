@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Proyect_Rotten_Tomatoes.Models.Movie>
+@{
+
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout_Film_Expert.cshtml";
+}
+
+<style>
+    .title {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        position: fixed;
+        left: 0;
+        top: 50%;
+        margin-top: -80px;
+        width: 50px;
+        text-align: center;
+        font-size: 35px;
+    }
+
+    .movies {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        max-width: 1100px;
+    }
+    
+    .card {
+        margin: 0 auto;
+    }
+</style>
+
+<div class="title">
+    MOVIES
+</div>
+
+<header>
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-gear"></i> Order by
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" asp-action="Index" asp-route-orderBy="CriticRating"><i class="bi bi-camera-reels"></i> Critic Rating</a>
+                <a class="dropdown-item" asp-action="Index" asp-route-orderBy="AudienceRating"><i class="bi bi-headset"></i> Critic_Audience </a>
+                <a class="dropdown-item" asp-action="Index" asp-route-orderBy="Genre"><i class="bi bi-person-square"></i> Genre </a>
+            </div>
+        </li>
+    </ul>
+</header>
+
+<section class="row">
+    @foreach (var item in Model)
+    {
+        <article class="col-md-4 col-xs-5 border-primary mb-3">
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title">
+                                @item.Title
+                                <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="@item.Image" class="img-fluid" alt="@item.Title">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text"><b>Genre: </b>@item.Genre</p>
+                            <p class="card-text"><b>Critic rate: </b>@item.Critic_Rating</p>
+                            <p class="card-text"><b>Audience rate: </b>@item.Audience_Rating</p>
+                            <p class="card-text"><b>Duration: </b>@item.Duration</p>
+                            <p class="card-text"><b>Release Date: </b>@item.Release_Date</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer d-flex justify-content-end">
+                            <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">
+                                <i class="bi bi-eye-fill"></i> Show Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    }
+</section>
+<div class="fixed-bottom d-flex justify-content-between text-white mr-3 mb-3">
+    <a asp-controller="Movies" asp-action="TopMovies" class="btn btn-success ml-auto">
+        <i class="bi bi-eye-fill"></i> Top Movies
+    </a>
+    <a asp-controller="Movies" asp-action="Create" class="btn btn-success mr-auto">
+        <i class="bi bi-plus-circle"></i> Add New
+    </a>
+    <a asp-controller="Series" asp-action="Index" class="btn btn-success ml-auto">
+        <i class="bi bi-eye-fill"></i> Series
+    </a>
+</div>

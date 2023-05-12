@@ -1,0 +1,41 @@
+﻿@model Proyect_Rotten_Tomatoes.Models.Serie
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header text-white bg-info">
+                        <h5 class="card-title">@Model.Title</h5>
+                    </div>
+                </div>
+                <div class="col-md-6 mx-auto">
+                    <img src="@Model.Image" class="card-img-top" alt="@Model.Title">
+                </div>
+                <div class="col-md-12">
+                    <div class="card-body">
+                        <h5 class="card-title">Synopsis:</h5>
+                        <p class="card-text">@Model.Synopsis</p>
+                        @if (Model.Serie_Team.Count() > 5)
+                        {
+                            <h5 class="card-title">Serie team:</h5>
+                            <p class="card-text">@Model.Serie_Team</p>
+                        }
+                        @if(Model.Available_Platforms.Count() > 4){
+                            <h5 class="card-title">Available platforms:</h5>
+                            <p class="card-text">@Model.Available_Platforms</p>
+                        }
+                        <h5 class="card-title">Critic rating:</h5>
+                        <p class="card-text">@Model.Critic_Rating</p>
+                        <h5 class="card-title">Audience rating:</h5>
+                        <p class="card-text">@Model.Audience_Rating</p>
+                        <h5 class="card-title">Principal actors:</h5>
+                        <p class="card-text">@Model.Principal_Actors</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

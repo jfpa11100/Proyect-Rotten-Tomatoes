@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    <h1 class="display-4">FK Rotten Tomatoes</h1>
+    <form asp-area="" asp-controller="Home" asp-action="LogIn" class="d-inline-block ml-3">
+        <button type="submit" class="btn btn-primary btn-lg">Log In</button>
+    </form>
+    <form asp-area="" asp-controller="Home" asp-action="SignUp" method="post" class="d-inline-block ml-3">
+        <button type="submit" class="btn btn-secondary btn-lg">Sign Up</button>
+    </form>
+</div>

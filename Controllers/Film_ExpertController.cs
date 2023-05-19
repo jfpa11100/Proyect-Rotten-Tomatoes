@@ -27,6 +27,91 @@ namespace Proyect_Rotten_Tomatoes.Controllers
                         Problem("Entity set 'Proyect_Rotten_TomatoesContext.Film_Expert'  is null.");
         }
 
+
+        public async Task<IActionResult> Film_ExpertMovies(string orderBy)
+        {
+            IEnumerable<Movie> movies = _context.Movie;
+            switch (orderBy)
+            {
+                case "CriticRating":
+                    movies = movies.OrderByDescending(m => m.Critic_Rating);
+                    break;
+                case "AudienceRating":
+                    movies = movies.OrderByDescending(m => m.Audience_Rating);
+                    break;
+                case "Genre":
+                    movies = movies.OrderBy(m => m.Genre);
+                    break;
+                default:
+                    break;
+            }
+            return View(movies);
+        }
+
+        public IActionResult Film_ExpertSeries(string orderBy)
+        {
+            IEnumerable<Serie> series = _context.Serie;
+
+            switch (orderBy)
+            {
+                case "CriticRating":
+                    series = series.OrderByDescending(s => s.Critic_Rating);
+                    break;
+                case "AudienceRating":
+                    series = series.OrderByDescending(s => s.Audience_Rating);
+                    break;
+                case "Genre":
+                    series = series.OrderBy(s => s.Genre);
+                    break;
+                default:
+                    break;
+            }
+
+            return View(series);
+        }
+
+        public async Task<IActionResult> Film_ExpertTopMovies(string orderBy)
+        {
+            await WebScraper.Top10Movies(_context);
+            IEnumerable<Movie> movies = _context.Movie;
+            switch (orderBy)
+            {
+                case "CriticRating":
+                    movies = movies.OrderByDescending(m => m.Critic_Rating);
+                    break;
+                case "AudienceRating":
+                    movies = movies.OrderByDescending(m => m.Audience_Rating);
+                    break;
+                case "Genre":
+                    movies = movies.OrderBy(m => m.Genre);
+                    break;
+                default:
+                    break;
+            }
+            return View(movies);
+        }
+
+        public async Task<IActionResult> Film_ExpertTopSeries(string orderBy)
+        {
+            await WebScraper.Top10Series(_context);
+            IEnumerable<Serie> series = _context.Serie;
+            switch (orderBy)
+            {
+                case "CriticRating":
+                    series = series.OrderByDescending(s => s.Critic_Rating);
+                    break;
+                case "AudienceRating":
+                    series = series.OrderByDescending(s => s.Audience_Rating);
+                    break;
+                case "Genre":
+                    series = series.OrderBy(s => s.Genre);
+                    break;
+                default:
+                    break;
+            }
+            return View(series);
+        }
+
         // GET: Film_Expert/Create
         public IActionResult Create()
         {

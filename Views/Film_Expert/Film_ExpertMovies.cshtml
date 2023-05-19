@@ -39,13 +39,13 @@
 <header>
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="bi bi-gear"></i> Order by
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" asp-action="Index" asp-route-orderBy="CriticRating"><i class="bi bi-camera-reels"></i> Critic Rating</a>
-                <a class="dropdown-item" asp-action="Index" asp-route-orderBy="AudienceRating"><i class="bi bi-headset"></i> Critic_Audience </a>
-                <a class="dropdown-item" asp-action="Index" asp-route-orderBy="Genre"><i class="bi bi-person-square"></i> Genre </a>
+                <a class="dropdown-item" asp-action="Film_ExpertMovies" asp-route-orderBy="CriticRating"><i class="bi bi-camera-reels"></i> Critic Rating</a>
+                <a class="dropdown-item" asp-action="Film_ExpertMovies" asp-route-orderBy="AudienceRating"><i class="bi bi-headset"></i> Critic_Audience </a>
+                <a class="dropdown-item" asp-action="Film_ExpertMovies" asp-route-orderBy="Genre"><i class="bi bi-person-square"></i> Genre </a>
             </div>
         </li>
     </ul>
@@ -61,7 +61,7 @@
                         <div class="card-header bg-info text-white">
                             <h5 class="card-title">
                                 @item.Title
-                                <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                <a class="text-white float-right" asp-controller="Movies" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
                             </h5>
                         </div>
                     </div>
@@ -71,15 +71,25 @@
                     <div class="col-md-6">
                         <div class="card-body">
                             <p class="card-text"><b>Genre: </b>@item.Genre</p>
-                            <p class="card-text"><b>Critic rate: </b>@item.Critic_Rating</p>
+                            @if(item.Critic_Rating != 1){
+                                <p class="card-text"><b>Critic rate: </b>@item.Critic_Rating</p>
+                            }
+                            else{
+                                <p class="card-text"><b>Critic rate: </b>--</p>
+                            }
+                            @if(item.Audience_Rating != 1){
                             <p class="card-text"><b>Audience rate: </b>@item.Audience_Rating</p>
+                            }
+                            else{
+                                <p class="card-text"><b>Audience rate: </b>--</p>
+                            }
                             <p class="card-text"><b>Duration: </b>@item.Duration</p>
                             <p class="card-text"><b>Release Date: </b>@item.Release_Date</p>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="card-footer d-flex justify-content-end">
-                            <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">
+                            <a class="btn btn-outline-primary" asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id">
                                 <i class="bi bi-eye-fill"></i> Show Details
                             </a>
                         </div>
@@ -90,13 +100,13 @@
     }
 </section>
 <div class="fixed-bottom d-flex justify-content-between text-white mr-3 mb-3">
-    <a asp-controller="Movies" asp-action="TopMovies" class="btn btn-success ml-auto">
+    <a asp-action="Film_ExpertTopMovies" class="btn btn-success ml-auto">
         <i class="bi bi-eye-fill"></i> Top Movies
     </a>
     <a asp-controller="Movies" asp-action="Create" class="btn btn-success mr-auto">
         <i class="bi bi-plus-circle"></i> Add New
     </a>
-    <a asp-controller="Series" asp-action="Index" class="btn btn-success ml-auto">
+    <a asp-controller="Film_Expert" asp-action="Film_ExpertSeries" class="btn btn-success ml-auto">
         <i class="bi bi-eye-fill"></i> Series
     </a>
 </div>

@@ -1,5 +1,6 @@
 ﻿namespace Proyect_Rotten_Tomatoes.Models
 {
+
     public class Serie
     {
         public int Id { get; set; }

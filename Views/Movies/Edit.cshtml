@@ -84,6 +84,11 @@
                 <span asp-validation-for="Principal_Actors" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Release_Date" class="control-label"></label>
+                <input asp-for="Release_Date" class="form-control" />
+                <span asp-validation-for="Release_Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -91,7 +96,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back Recommendations</a>
+    <a asp-controller="Film_Expert" asp-action="Film_ExpertMovies">Back Recommendations</a>
 
     <a asp-action="Delete" asp-route-id="@Model.Id" style="color:red">Delete Recommendation</a>
 </div>

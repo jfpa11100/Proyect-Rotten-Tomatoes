@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<Proyect_Rotten_Tomatoes.Models.Serie>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout_Cinephile.cshtml";
+    //ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout_Film_Expert.cshtml";
 }
 
 <style>
@@ -39,13 +39,13 @@
 <header>
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="bi bi-gear"></i> Order by
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" asp-action="Index" asp-route-orderBy="CriticRating"><i class="bi bi-camera-reels"></i> Critic Rating</a>
-                <a class="dropdown-item" asp-action="Index" asp-route-orderBy="AudienceRating"><i class="bi bi-headset"></i> Critic_Audience </a>
-                <a class="dropdown-item" asp-action="Index" asp-route-orderBy="Genre"><i class="bi bi-person-square"></i> Genre </a>
+                <a class="dropdown-item" asp-action="Film_ExpertSeries" asp-route-orderBy="CriticRating"><i class="bi bi-camera-reels"></i> Critic Rating</a>
+                <a class="dropdown-item" asp-action="Film_ExpertSeries" asp-route-orderBy="AudienceRating"><i class="bi bi-headset"></i> Critic_Audience </a>
+                <a class="dropdown-item" asp-action="Film_ExpertSeries" asp-route-orderBy="Genre"><i class="bi bi-person-square"></i> Genre </a>
             </div>
         </li>
     </ul>
@@ -61,7 +61,7 @@
                         <div class="card-header bg-info text-white">
                             <h5 class="card-title">
                                 @item.Title
-                                <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                <a class="text-white float-right" asp-controller="Series" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
                             </h5>
                         </div>
                     </div>
@@ -88,11 +88,12 @@
                             {
                                 <p class="card-text"><b>Audience rate: </b>--</p>
                             }
+                            <p class="card-text"><b>Premiere Date: </b>@item.Premiere_Date</p>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="card-footer d-flex justify-content-end">
-                            <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">
+                            <a class="btn btn-outline-primary" asp-controller="Series" asp-action="Details" asp-route-id="@item.Id">
                                 <i class="bi bi-eye-fill"></i> Show Details
                             </a>
                         </div>
@@ -103,13 +104,13 @@
     }
 </section>
 <div class="fixed-bottom d-flex justify-content-between text-white mr-3 mb-3">
-    <a asp-controller="Series" asp-action="TopSeries" class="btn btn-success ml-auto">
+    <a asp-action="Film_ExpertTopSeries" class="btn btn-success ml-auto">
         <i class="bi bi-eye-fill"></i> Top Series
     </a>
     <a asp-controller="Series" asp-action="Create" class="btn btn-success mr-auto">
         <i class="bi bi-plus-circle"></i> Add New
     </a>
-    <a asp-controller="Movies" asp-action="Index" class="btn btn-success ml-auto">
+    <a asp-controller="Film_Expert" asp-action="Film_ExpertMovies" class="btn btn-success ml-auto">
         <i class="bi bi-eye-fill"></i> Movies
     </a>
 </div>

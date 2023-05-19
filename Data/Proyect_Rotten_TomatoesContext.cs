@@ -21,5 +21,12 @@ namespace Proyect_Rotten_Tomatoes.Data
         public DbSet<Proyect_Rotten_Tomatoes.Models.Movie>? Movie { get; set; }
 
         public DbSet<Proyect_Rotten_Tomatoes.Models.Serie>? Serie { get; set; }
+        public DbSet<Proyect_Rotten_Tomatoes.Models.FavouriteMovies>? FavouriteMovies { get; set; }
+        public DbSet<Proyect_Rotten_Tomatoes.Models.FavouriteSeries>? FavouriteSeries { get; set; }
+
+        internal Task GetAllAsync(Func<object, object> value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -65,12 +65,13 @@ namespace Proyect_Rotten_Tomatoes.Controllers
             if (cinephile != null && cinephile.Password == password)
             {
                 // cinephile logged in
-                return RedirectToAction("Index","Movies", cinephile);
+                CinephilesController.Cinephile = cinephile;
+                return RedirectToAction("CinephileMovies","Cinephiles");
             }
             else if (filmExpert != null && filmExpert.Password == password)
             {
                 // film expert logged in
-                return RedirectToAction("Index", "Movies", filmExpert);
+                return RedirectToAction("Film_ExpertMovies", "Film_Expert");
             }
             ModelState.AddModelError(string.Empty, "Invalid email or password.");
             return View();

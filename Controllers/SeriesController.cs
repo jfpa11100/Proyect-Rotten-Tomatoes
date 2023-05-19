@@ -15,29 +15,6 @@ namespace Proyect_Rotten_Tomatoes.Controllers
             _context = context;
         }
 
-        // GET: Series
-        public IActionResult Index(string orderBy)
-        {
-            IEnumerable<Serie> series = _context.Serie;
-
-            switch (orderBy)
-            {
-                case "CriticRating":
-                    series = series.OrderByDescending(m => m.Critic_Rating);
-                    break;
-                case "AudienceRating":
-                    series = series.OrderByDescending(m => m.Audience_Rating);
-                    break;
-                case "Genre":
-                    series = series.OrderBy(m => m.Genre);
-                    break;
-                default:
-                    break;
-            }
-
-            return View(series);
-        }
-
         // GET: Series/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -96,7 +73,7 @@ namespace Proyect_Rotten_Tomatoes.Controllers
                 return View();
             }
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Series");
+            return RedirectToAction("Film_ExpertSeries", "Film_Expert");
         }
 
             // GET: Series/Edit/5
@@ -120,7 +97,7 @@ namespace Proyect_Rotten_Tomatoes.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,url,Title,Image,Critic_Rating,Audience_Rating,Available_Platforms,Synopsis,Rating,Genre,Serie_Team,Duration,Principal_Actors")] Serie serie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,url,Title,Image,Critic_Rating,Audience_Rating,Available_Platforms,Synopsis,Genre,Serie_Team,Principal_Actors,Premiere_Date,Top")] Serie serie)
         {
             if (id != serie.Id)
             {
@@ -145,7 +122,7 @@ namespace Proyect_Rotten_Tomatoes.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Film_ExpertSeries", "Film_Expert");
             }
             return View(serie);
         }
@@ -184,42 +161,12 @@ namespace Proyect_Rotten_Tomatoes.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Film_ExpertSeries", "Film_Expert");
         }
 
         private bool SerieExists(int id)
         {
           return (_context.Serie?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-
-        public async Task<IActionResult> TopSeries()
-        {
-            return _context.Serie != null ?
-                        View(await _context.Serie.ToListAsync()) :
-                        Problem("Entity set 'Proyect_Rotten_TomatoesContext.Serie'  is null.");
-        }
-
-        public IActionResult UpdateSection()
-        {
-            // Code to update the section goes here
-
-            var series = _context.Serie.ToList();
-            return RedirectToAction("TopSeries", "Series");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Update()
-        {
-            var series = _context.Serie.ToList();
-            var topSeries = series.OrderByDescending(s => s.Critic_Rating).Take(6);
-            foreach (var serie in topSeries)
-            {
-                Task<Serie> updatedSerieTask = WebScraper.Get_Serie_dataAsync(serie.url, serie.Id, _context);
-                Serie updatedSerie = updatedSerieTask.Result;
-                _context.Serie.Update(updatedSerie);
-            }
-            await _context.SaveChangesAsync();
-            return RedirectToAction("TopSeries", "Series");
         }
     }
 }

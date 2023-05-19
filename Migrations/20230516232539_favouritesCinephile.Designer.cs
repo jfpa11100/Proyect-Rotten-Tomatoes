@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proyect_Rotten_Tomatoes.Data;
 
@@ -10,9 +11,10 @@ using Proyect_Rotten_Tomatoes.Data;
 namespace Proyect_Rotten_Tomatoes.Migrations
 {
     [DbContext(typeof(Proyect_Rotten_TomatoesContext))]
-    partial class Proyect_Rotten_TomatoesContextModelSnapshot : ModelSnapshot
+    [Migration("20230516232539_favouritesCinephile")]
+    partial class favouritesCinephile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

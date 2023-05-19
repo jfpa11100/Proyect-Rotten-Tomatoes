@@ -7,6 +7,7 @@ using System;
 using System.Runtime.InteropServices.ObjectiveC;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using static System.Collections.Specialized.BitVector32;
 
 namespace Proyect_Rotten_Tomatoes.Models
@@ -46,19 +47,34 @@ namespace Proyect_Rotten_Tomatoes.Models
 
 
             //Audience_Rating 
-            string audience_rating_parsed = htmlDoc.DocumentNode.Descendants("score-board")
+            int audience_rating = 1;
+            try
+            {
+                string audience_rating_parsed = htmlDoc.DocumentNode.Descendants("score-board")
                .Where(node => node.GetAttributeValue("data-qa", "").Contains("score-panel")).
                ToList()[0].GetAttributeValue("audiencescore", "");
-            int audience_rating = Convert.ToInt32(audience_rating_parsed);
+                audience_rating = Convert.ToInt32(audience_rating_parsed);
+            }
+            catch
+            {
+                audience_rating = 1;
+            }
 
             //string Available_Platforms 
             string available_platforms = "";
-            var platforms_parsed = htmlDoc.DocumentNode.Descendants("bubbles-overflow-container")
-               .Where(node => node.GetAttributeValue("data-curation", "").Contains("rt-affiliates-sort-order")).
-               ToList();
-            for (int i=3; i < platforms_parsed[0].ChildNodes.Count; i++)
+            try
             {
-                available_platforms += platforms_parsed[0].ChildNodes[i].GetAttributeValue("affiliate", "")+" ";
+                var platforms_parsed = htmlDoc.DocumentNode.Descendants("bubbles-overflow-container")
+                   .Where(node => node.GetAttributeValue("data-curation", "").Contains("rt-affiliates-sort-order")).
+                   ToList();
+                for (int i=3; i < platforms_parsed[0].ChildNodes.Count; i++)
+                {
+                    available_platforms += platforms_parsed[0].ChildNodes[i].GetAttributeValue("affiliate", "")+" ";
+                }
+            }
+            catch
+            {
+                available_platforms = " ";
             }
 
             //string Synopsis 
@@ -467,6 +483,97 @@ namespace Proyect_Rotten_Tomatoes.Models
             }
 
             return serie;
+        }
+
+
+
+        public static async Task Top10Series(Proyect_Rotten_TomatoesContext _context)
+        {
+            var allRecords = _context.Serie.ToList();
+            foreach (var record in allRecords)
+            {
+                record.Top = false;
+            }
+            _context.SaveChanges();
+            string response = WebScraper.Call_url("https://www.rottentomatoes.com/browse/tv_series_browse/sort:popular").Result;
+            HtmlDocument htmlDoc = new();
+            htmlDoc.LoadHtml(response);
+
+            //TopSeries
+            var topSeries = htmlDoc.DocumentNode.Descendants("div")
+               .Where(node => node.GetAttributeValue("class", "").Contains("js-tile-link ")).
+               ToList().Take(10);
+
+            foreach ( var ser in topSeries ) 
+            {
+                string rotten = "https://www.rottentomatoes.com";
+                string NameSer = ser.Descendants("a")
+                    .Where(node => node.GetAttributeValue("data-qa", "").Contains("discovery-media-list-item-caption")).ToList()[0].GetAttributeValue("href", "");
+                string SerieLink = rotten + NameSer;
+
+                //Title
+                string title = NameSer.Substring(NameSer.LastIndexOf("/") + 1);
+                title = title.ToUpper();
+                title = title.Replace("_", " ");
+                var serieToDelete = await _context.Serie.FirstOrDefaultAsync(s => s.Title == title);
+                if (serieToDelete != null)
+                {
+                    serieToDelete.Top = true;
+                }
+                else
+                {
+                    Serie serie = WebScraper.Get_Serie_data(SerieLink);
+                    serie.Top = true;
+                    _context.Add(serie);
+                }
+                await _context.SaveChangesAsync();
+
+            }
+
+        }
+
+
+        public static async Task Top10Movies(Proyect_Rotten_TomatoesContext _context)
+        {
+            var allRecords = _context.Movie.ToList();
+            foreach (var record in allRecords)
+            {
+                record.Top = false;
+            }
+            _context.SaveChanges();
+            string response = WebScraper.Call_url("https://www.rottentomatoes.com/").Result;
+            HtmlDocument htmlDoc = new();
+            htmlDoc.LoadHtml(response);
+
+            //TopMovies
+            var topMovies = htmlDoc.DocumentNode.Descendants("tiles-carousel-responsive-item")
+               .Where(node => node.GetAttributeValue("slot", "").Contains("tile")).
+               ToList().Take(10);
+
+            foreach (var mov in topMovies)
+            {
+                string rotten = "https://www.rottentomatoes.com";
+                string NameMov = mov.Descendants("a")
+                    .ToList()[0].GetAttributeValue("href", "");
+                string MovieLink = rotten + NameMov;
+
+                //Title
+                string title = NameMov.Substring(NameMov.LastIndexOf("/") + 1);
+                title = title.ToUpper();
+                title = title.Replace("_", " ");
+                var movieExists= await _context.Movie.FirstOrDefaultAsync(m => m.Title == title);
+                if (movieExists != null)
+                {
+                    movieExists.Top = true;
+                }
+                else
+                {
+                    Movie movie = WebScraper.Get_Movie_data(MovieLink);
+                    movie.Top = true;
+                    _context.Add(movie);
+                }
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }

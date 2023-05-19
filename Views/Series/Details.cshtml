@@ -18,6 +18,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Synopsis:</h5>
                         <p class="card-text">@Model.Synopsis</p>
+                        <h5 class="card-title">Premiere Date:</h5>
+                        <p class="card-text">@Model.Premiere_Date</p>
+                        <h5 class="card-title">Critic rating:</h5>
+                        <p class="card-text">@Model.Critic_Rating</p>
+                        <h5 class="card-title">Audience rating:</h5>
+                        <p class="card-text">@Model.Audience_Rating</p>
                         @if (Model.Serie_Team.Count() > 5)
                         {
                             <h5 class="card-title">Serie team:</h5>
@@ -27,10 +33,6 @@
                             <h5 class="card-title">Available platforms:</h5>
                             <p class="card-text">@Model.Available_Platforms</p>
                         }
-                        <h5 class="card-title">Critic rating:</h5>
-                        <p class="card-text">@Model.Critic_Rating</p>
-                        <h5 class="card-title">Audience rating:</h5>
-                        <p class="card-text">@Model.Audience_Rating</p>
                         <h5 class="card-title">Principal actors:</h5>
                         <p class="card-text">@Model.Principal_Actors</p>
                     </div>

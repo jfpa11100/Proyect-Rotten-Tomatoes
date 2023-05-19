@@ -1,0 +1,118 @@
+﻿    @model IEnumerable<Proyect_Rotten_Tomatoes.Models.Serie>
+
+@{
+    //ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout_Cinephile.cshtml";
+}
+
+<style>
+    .title {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        position: fixed;
+        left: 0;
+        top: 50%;
+        margin-top: -80px;
+        width: 50px;
+        text-align: center;
+        font-size: 35px;
+    }
+
+    .movies {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        max-width: 1100px;
+    }
+    
+    .card {
+        margin: 0 auto;
+    }
+</style>
+
+<div class="title">
+    SERIES
+</div>
+
+<header>
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-gear"></i> Order by
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" asp-action="CinephileSeries" asp-route-orderBy="CriticRating"><i class="bi bi-camera-reels"></i> Critic Rating</a>
+                <a class="dropdown-item" asp-action="CinephileSeries" asp-route-orderBy="AudienceRating"><i class="bi bi-headset"></i> Critic_Audience </a>
+                <a class="dropdown-item" asp-action="CinephileSeries" asp-route-orderBy="Genre"><i class="bi bi-person-square"></i> Genre </a>
+            </div>
+        </li>
+    </ul>
+</header>
+<form asp-action="AddFavoriteSerie">
+<section class="row">
+    @foreach (var item in Model)
+    {
+        <article class="col-md-4 col-xs-5 border-primary mb-3">
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title">
+                                @item.Title
+                                <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="@item.Image" class="img-fluid" alt="@item.Title">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text"><b>Genre: </b>@item.Genre</p>
+                            @if (item.Critic_Rating != 1)
+                            {
+                                <p class="card-text"><b>Critic rate: </b>@item.Critic_Rating</p>
+                            }
+                            else
+                            {
+                                <p class="card-text"><b>Critic rate: </b>--</p>
+                            }
+
+                            @if (item.Audience_Rating != 1)
+                            {
+                                <p class="card-text"><b>Audience rate: </b>@item.Audience_Rating</p>
+                            }
+                            else
+                            {
+                                <p class="card-text"><b>Audience rate: </b>--</p>
+                            }
+                            <p class="card-text"><b>Premiere Date: </b>@item.Premiere_Date</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer d-flex justify-content-end">
+                            <a class="btn btn-outline-primary" asp-controller="Series" asp-action="Details" asp-route-id="@item.Id">
+                                <i class="bi bi-eye-fill"></i> Show Details
+                            </a>
+                            <form method="post" asp-controller="Cinephiles" asp-action="AddFavoriteSerie">
+                                    <input type="hidden" name="serie" value='@Json.Serialize(item)' />
+                                    <input type="submit" value="Add Favorite" class="btn btn-danger" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    }
+</section>
+</form>
+<div class="fixed-bottom d-flex justify-content-between text-white mr-3 mb-3">
+    <a asp-action="CinephileTopSeries" class="btn btn-success ml-auto">
+        <i class="bi bi-eye-fill"></i> Top Series
+    </a>
+    <a asp-controller="Cinephiles" asp-action="CinephileMovies" class="btn btn-success ml-auto">
+        <i class="bi bi-eye-fill"></i> Movies
+    </a>
+</div>

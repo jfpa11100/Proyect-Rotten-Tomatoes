@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Proyect_Rotten_Tomatoes.Models.Movie>
+@{
+    ViewData["Title"] = "TopMovies";
+    Layout = "~/Views/Shared/_Layout_Film_Expert.cshtml";
+}
+<style>
+    .title {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        position: fixed;
+        left: 0;
+        top: 50%;
+        margin-top: -80px;
+        width: 50px;
+        text-align: center;
+        font-size: 35px;
+    }
+
+    .movies {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        max-width: 1100px;
+    }
+    
+    .card {
+        margin: 0 auto;
+    }
+</style>
+
+<div class="title">
+    TOP MOVIES
+</div>
+
+<section class="row">
+    @foreach (var item in Model)
+    {
+        if (item.Top == true)
+        {
+            <article class="col-md-4 col-xs-5 border-primary mb-3">
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-12">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="card-title">
+                                    @item.Title
+                                    <a class="text-white float-right" asp-controller="Movies" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="@item.Image" class="img-fluid" alt="@item.Title">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <p class="card-text"><b>Genre: </b>@item.Genre</p>
+                                @if(item.Critic_Rating != 1){
+                                    <p class="card-text"><b>Critic rate: </b>@item.Critic_Rating</p>
+                                }
+                                else{
+                                    <p class="card-text"><b>Critic rate: </b>--</p>
+                                }
+                                @if(item.Audience_Rating != 1){
+                                <p class="card-text"><b>Audience rate: </b>@item.Audience_Rating</p>
+                                }
+                                else{
+                                    <p class="card-text"><b>Audience rate: </b>--</p>
+                                }
+                                <p class="card-text"><b>Duration: </b>@item.Duration</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-footer d-flex justify-content-end">
+                                <a class="btn btn-outline-primary" asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id">
+                                    <i class="bi bi-eye-fill"></i> Show Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        }
+    }
+</section>
+<div class="fixed-bottom d-flex justify-content-between text-white mr-3 mb-3">
+    <a asp-action="Film_ExpertMovies" class="btn btn-success ml-auto">
+        <i class="bi bi-plus-circle"></i> All Movies
+    </a>
+</div>

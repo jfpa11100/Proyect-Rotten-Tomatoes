@@ -8,5 +8,8 @@ namespace Proyect_Rotten_Tomatoes.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+
+        public List<FavouriteMovies> FavouriteMovies { get; set; }
+        public List<FavouriteSeries> FavouriteSeries { get; set; }
     }
 }
